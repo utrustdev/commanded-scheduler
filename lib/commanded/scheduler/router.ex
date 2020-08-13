@@ -1,7 +1,8 @@
 defmodule Commanded.Scheduler.Router do
   @moduledoc false
 
-  use Commanded.Commands.Router
+  use Commanded.Commands.Router,
+    application: Application.get_env(:commanded_scheduler, :application)
 
   alias Commanded.Scheduler.{
     CancelSchedule,
