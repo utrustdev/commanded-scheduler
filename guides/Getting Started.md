@@ -37,6 +37,42 @@ config :commanded_scheduler, Commanded.Scheduler.Repo,
 
 You can use an existing database for the Scheduler. It will create a table named `schedules` to store scheduled commands and a `projection_versions`, if not present, used for Commanded's read model projections.
 
+OR Configure your own Repo, that can be configured dynamically
+
+```
+config :commanded_scheduler, repo: MyApp.Repo
+```
+
+And Add two migrations to your repo
+
+```
+    create table(:schedules, primary_key: false) do
+      add :schedule_uuid, :text, primary_key: true
+      add :name, :text, primary_key: true
+      add :command, :map
+      add :command_type, :text
+      add :due_at, :naive_datetime
+      add :schedule, :text
+
+      timestamps()
+    end
+```
+```
+    create_if_not_exists table(:projection_versions, primary_key: false) do
+      add :projection_name, :text, primary_key: true
+      add :last_seen_event_number, :bigint
+
+      timestamps()
+    end
+```
+
+
+Configure the commanded app where you want to use the Scheduler
+
+```
+config :commanded_scheduler, application: MyApp
+```
+
 ### Create Commanded scheduler database
 
 Once configured, you can create and migrate the scheduler database using Ecto's mix tasks.
