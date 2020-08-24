@@ -21,11 +21,13 @@ defmodule Commanded.Scheduler.Scheduling do
 
   alias Commanded.Scheduler.Projection.Schedule
 
+  @repo Application.get_env(:commanded_scheduler, :repo) || Repo
+
   @doc """
   Reschedule all existing schedules on start.
   """
   def init do
-    for schedule <- Repo.all(Schedule) do
+    for schedule <- @repo.all(Schedule) do
       %Schedule{
         schedule_uuid: schedule_uuid,
         name: name,
