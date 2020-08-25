@@ -42,7 +42,13 @@ defmodule Commanded.Scheduler.Mixfile do
 
   defp deps do
     [
-      {:commanded, ">= 0.18.0", runtime: false},
+      # TODO: Resolve commanded version at Utrust app to avoid using version mp/in-memory-reset-1.0.1
+      # {:commanded, ">= 1.0.0", runtime: false},
+      {:commanded,
+       github: "utrustdev/commanded",
+       ref: "mp/in-memory-reset-1.0.1",
+       override: true,
+       runtime: false},
       {:commanded_ecto_projections, ">= 0.8.0"},
       {:crontab, "~> 1.1"},
       {:ecto, "~> 3.1"},
